@@ -85,3 +85,9 @@ The preparation script checks the pinned native symbol, builds the observer, exp
 - data/, checkpoints/, results/, artifacts/, vendor/: generated locally and excluded from Git.
 
 See [REPRODUCIBILITY.md](REPRODUCIBILITY.md) for protocol details and validation limits, and [THIRD_PARTY.md](THIRD_PARTY.md) for upstream sources. No author identity, contact address, pretrained model, or result table is embedded in this release.
+
+## License
+
+The original code in this repository is available under the [MIT License](LICENSE).
+Third-party software and datasets retain their upstream licenses and notices; see
+[THIRD_PARTY.md](THIRD_PARTY.md).
