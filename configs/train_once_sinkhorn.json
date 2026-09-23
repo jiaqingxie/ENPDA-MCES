@@ -1,0 +1,85 @@
+{
+  "protocol_version": "train-once-sinkhorn-graph-disjoint-v1-20260917",
+  "frozen_before_native_results": true,
+  "scientific_question": "Does ENPDA outperform a shared equivariant affinity network followed by standard Sinkhorn or best-of-10 Gumbel-Sinkhorn without primal-dual dynamics?",
+  "parent_split_manifest": "data/sinkhorn_disjoint_parent.json",
+  "teacher_pattern": "results/enpda_graph_disjoint_v1/formal/seed{seed}/teachers/seed{seed}.jsonl",
+  "datasets": [
+    "AIDS",
+    "MOLHIV",
+    "MCF-7"
+  ],
+  "training_seeds": [
+    0,
+    1,
+    2
+  ],
+  "model": {
+    "hidden_dim": 64,
+    "message_layers": 2,
+    "incompatibility_penalty": 8.0,
+    "initial_dummy_logit": -1.0,
+    "sinkhorn_iterations": 20,
+    "temperature": 1.0
+  },
+  "training": {
+    "epochs": 12,
+    "learning_rate": 0.0003,
+    "weight_decay": 1e-05,
+    "gradient_accumulation": 8,
+    "gradient_clip_norm": 2.0,
+    "teacher_nll_weight": 1.0,
+    "analytic_margin_weight": 0.5,
+    "analytic_nll_margin": 0.01,
+    "soft_objective_weight": 0.05,
+    "checkpoint_epochs": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10,
+      12
+    ],
+    "selection_metric": "graph-disjoint validation mean hard edges divided by min(|E1|,|E2|); no native test access"
+  },
+  "evaluation": {
+    "deterministic": "one learned affinity, one 20-iteration partial Sinkhorn, one Hungarian",
+    "gumbel": "the same checkpoint and affinity with 10 iid standard-Gumbel perturbations, 20 Sinkhorn iterations per sample, one Hungarian per sample, exact hard-score selection",
+    "gumbel_samples": 10,
+    "gumbel_seed_rule": "2026083000 + 100000*training_seed + stable_pair_index",
+    "no_prices": true,
+    "no_primal_dual_recurrence": true,
+    "no_discrete_refinement": true,
+    "native_pairs": {
+      "AIDS": 100,
+      "MOLHIV": 91,
+      "MCF-7": 100
+    }
+  },
+  "statistics": {
+    "bootstrap_replicates": 20000,
+    "unit": "paired native graph with independent resampling of three training seeds"
+  },
+  "hardware": {
+    "accelerator_any": [
+      "H100",
+      "H200"
+    ],
+    "cuda_runtime_prefix": "12.8"
+  },
+  "outputs": {
+    "checkpoint_pattern": "checkpoints/train_once_sinkhorn/seed{seed}.best.pt",
+    "training_result_pattern": "results/train_once_sinkhorn/training/seed{seed}.json",
+    "native_root": "results/train_once_sinkhorn/native",
+    "summary": "results/train_once_sinkhorn/summary.json",
+    "completion": "results/train_once_sinkhorn/COMPLETE.json",
+    "table": "paper/generated/train_once_sinkhorn.tex"
+  },
+  "smoke": {
+    "train_pairs_per_dataset": 1,
+    "validation_pairs_per_dataset": 1,
+    "epochs": 1
+  },
+  "graph_disjoint_manifest": "data/enpda_graph_disjoint_v1/manifest.json"
+}

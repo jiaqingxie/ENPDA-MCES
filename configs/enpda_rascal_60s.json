@@ -1,0 +1,41 @@
+{
+  "protocol_version": "enpda-rascal-cap60-v1-2026-08-30",
+  "frozen_at_utc": "2026-08-30T09:25:00Z",
+  "scientific_question": "At the same 60-second per-pair wall-clock cap, how do ENPDA-Solver and RASCAL compare on the complete sanitized native scope?",
+  "datasets": ["AIDS", "MOLHIV", "MCF-7"],
+  "native_pairs": {"AIDS": 100, "MOLHIV": 91, "MCF-7": 100},
+  "training_seeds": [0, 1, 2],
+  "wall_clock_cap_seconds": 60,
+  "enpda": {
+    "checkpoint_pattern": "checkpoints/enpda_formal/seed{seed}.best.pt",
+    "learned_streams": 3,
+    "analytic_streams": 1,
+    "stream_order": "cyclically rotated by the preregistered search seed",
+    "allocation": "remaining wall time is divided equally among the remaining streams",
+    "core_rounds": 4,
+    "noise_scale": 0.5,
+    "maximum_restarts_per_stream": 64,
+    "refinement_passes": 30,
+    "anneal_steps": 2500,
+    "lns_steps": 250,
+    "candidate_admission": "only a legal candidate completed no later than the global 60-second deadline may update the returned incumbent"
+  },
+  "rascal": {
+    "records_pattern": "results/rascal-mces/rascal_{dataset}.jsonl",
+    "completion_marker": "results/rascal-mces/complete.json",
+    "timeout_policy": "retain and score the legal incumbent on every timeout"
+  },
+  "statistics": {
+    "bootstrap_replicates": 20000,
+    "report_timeout_counts": true,
+    "report_realized_mean_and_p95_seconds": true
+  },
+  "hardware": {
+    "accelerator_any": ["H100", "H200"],
+    "cuda_runtime_prefix": "12.8"
+  },
+  "outputs": {
+    "root": "results/enpda_rascal_60s",
+    "table": "paper/generated/enpda_rascal_60s.tex"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "protocol_version": "enpda-retrieval-global-isomorphism-disjoint-v2-20260918",
+  "reason": "The original pools passed ordered-tensor checks but failed global exact graph-identity checks; no refreshed ENPDA retrieval predictions were produced on those pools.",
+  "datasets": [
+    "MOLHIV",
+    "MCF-7"
+  ],
+  "protocol_seeds": [
+    20260823,
+    20260824,
+    20260825
+  ],
+  "training_seeds": [
+    0,
+    1,
+    2
+  ],
+  "queries": 20,
+  "candidates": 500,
+  "controlled_count": 8,
+  "parent_pool_size": 650,
+  "derived_per_parent": 2,
+  "exclusion": "Every node/edge-label-preserving isomorphism class in the union of all three released MCES training banks, which contains every ENPDA reference/student training/validation graph and the supervised retrieval baselines' training/validation graphs.",
+  "identity": "WL4 is only a prefilter. Ordered JSON tensor digests cache repeated inputs; exact VF2 confirms identity. First-seen representative digests name equivalence classes.",
+  "pool_construction": "Keep the existing deterministic size-controlled parent selection, 0.65 WL cosine + 0.35 size hardness, edit recipes and 20x500 scope; replace ordered-tensor identities by exact labeled graph identities before selecting any query, parent or derived candidate.",
+  "selection_uses_predictions_or_labels": false,
+  "oracle": {
+    "method": "RASCAL",
+    "seconds_per_pair": 60,
+    "workers": 12,
+    "relevance_threshold": 0.5,
+    "timeouts": "Keep unresolved metric intervals; never silently impute negatives."
+  },
+  "evaluation": {
+    "enpda": "Unchanged frozen graph-disjoint checkpoint matched to pool seed, original Fast search budget",
+    "baselines": [
+      "size",
+      "wl",
+      "simgnn",
+      "gmn",
+      "neuromatch"
+    ],
+    "neural_baselines": "Reuse their previously trained supervised checkpoints and evaluate all methods on the same rebuilt pools; no retrieval test training."
+  },
+  "data_root": "data/enpda_retrieval_disjoint_v2/500-way",
+  "output_root": "results/enpda_graph_disjoint_v1/retrieval_v2",
+  "latex_updates": false,
+  "no_outcome_based_reruns": true
+}

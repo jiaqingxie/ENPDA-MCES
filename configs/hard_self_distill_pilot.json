@@ -1,0 +1,61 @@
+{
+  "protocol_version": "nema-hard-self-distill-validation-v1-2026-08-25",
+  "exploratory_validation_only": true,
+  "scientific_question": "Can an exactly unit-anchored neural preconditioner amortize objective-generated hard refinement into better one-shot native proposals?",
+  "parent_split_manifest": "results/unit_anchored_st_pilot/manifest.json",
+  "parent_split_manifest_sha256": "f47cab05ba3fbcc0c94475f899f1accb3c353143a92371c8c3e6f98c1ad7f277",
+  "datasets": ["AIDS", "MOLHIV", "MCF-7"],
+  "training_seeds": [0, 1, 2],
+  "base_checkpoints": [
+    "checkpoints/ablation/nema_joint_seed0.best.pt",
+    "checkpoints/ablation/nema_joint_seed1.best.pt",
+    "checkpoints/ablation/nema_joint_seed2.best.pt"
+  ],
+  "teacher": {
+    "unit_mirror_steps": 2,
+    "refinement_passes": 30,
+    "initializer_mode": "learned",
+    "schedule_mode": "learned",
+    "metric_mode": "unit",
+    "rounding": "Hungarian followed by steepest exact 2-exchange/reassignment",
+    "supervised_rows": "only source nodes incident to teacher-preserved compatible edges",
+    "uses_released_mapping": false,
+    "uses_released_optimum": false
+  },
+  "training": {
+    "epochs": 12,
+    "learning_rate": 0.0001,
+    "gradient_accumulation": 8,
+    "gradient_clip_norm": 1.0,
+    "mirror_step_budgets": [1, 2, 4],
+    "distill_weight": 1.0,
+    "unit_margin_weight": 0.5,
+    "unit_nll_margin": 0.02,
+    "soft_objective_weight": 0.05,
+    "unit_anchor_weight": 0.001,
+    "metric_initialization": "M=exp(log(2)*tanh(r)); exact M=1 at epoch 0 and M in [0.5,2]",
+    "optimized_parameters": "positive diagonal preconditioner only",
+    "frozen_parameters": ["initial_weights", "initial_bias", "step_logits"],
+    "uses_native_test_pairs": false,
+    "uses_ground_truth_correspondence": false,
+    "uses_optimum_edge_count": false
+  },
+  "validation": {
+    "mirror_step_budgets": [1, 2, 4],
+    "repetitions": 3,
+    "checkpoint_epochs": [0, 2, 4, 6, 8, 10, 12],
+    "rounding": "one-shot Hungarian with no hard refinement",
+    "selection_metric": "held-out-training mean normalized hard-edge advantage over identical Unit; ties prefer earlier epoch",
+    "pass_min_dataset_mean": 0.005,
+    "pass_positive_seeds_per_dataset": 2,
+    "pass_rule": "for every dataset, three-seed mean normalized advantage exceeds 0.005 and at least two seeds are positive"
+  },
+  "formal_hardware": {"accelerator_contains": "H100", "cuda_runtime": "12.8"},
+  "outputs": {
+    "root": "results/hard_self_distill_pilot",
+    "manifest": "results/hard_self_distill_pilot/manifest.json",
+    "teachers": "results/hard_self_distill_pilot/teachers",
+    "checkpoints": "checkpoints/hard_self_distill_pilot",
+    "summary": "results/hard_self_distill_pilot/summary.json"
+  }
+}

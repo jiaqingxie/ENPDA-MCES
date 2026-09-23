@@ -1,0 +1,63 @@
+{
+  "protocol_version": "aema-native-no-network-solver-v1-2026-08-29",
+  "frozen_at_utc": "2026-08-29T00:00:00Z",
+  "scientific_question": "Does the amortized AEMA-full solver retain a native quality advantage over a strictly non-neural solver with the same continuous-stream and hard-search budget?",
+  "datasets": [
+    "AIDS",
+    "MOLHIV",
+    "MCF-7"
+  ],
+  "native_pairs": {
+    "AIDS": 100,
+    "MOLHIV": 91,
+    "MCF-7": 100
+  },
+  "released_files_evaluated": {
+    "AIDS": 100,
+    "MOLHIV": 91,
+    "MCF-7": 100
+  },
+  "recovered_molhiv_policy": "Exclude the seven predeclared empty-tensor native test files before evaluation.",
+  "search_seeds": [
+    0,
+    1,
+    2
+  ],
+  "no_network_contract": {
+    "checkpoint": null,
+    "initializer_mode": "fixed",
+    "schedule_mode": "fixed",
+    "metric_mode": "unit",
+    "metric": "M=1",
+    "learned_parameter_dependence": false,
+    "startup_check": "Perturb every trainable parameter in a second model and require identical fixed/fixed/unit assignments and objectives on a native pair."
+  },
+  "matched_solver_budget": {
+    "continuous_primary_streams": 3,
+    "deterministic_reference_streams": 1,
+    "total_streams": 4,
+    "discrete_restarts_per_stream": 64,
+    "constructive_restarts_per_stream": 64,
+    "refinement_passes": 30,
+    "anneal_steps": 2500,
+    "lns_steps": 250,
+    "certificate_seconds": 0,
+    "line_search": true,
+    "stationary_safeguard": true,
+    "sinkhorn_tolerance": 1e-05,
+    "sinkhorn_max_iterations": {
+      "AIDS": 2000,
+      "MOLHIV": 250,
+      "MCF-7": 250
+    }
+  },
+  "formal_hardware": {
+    "accelerator_contains": [
+      "H100",
+      "H200"
+    ],
+    "cuda_runtime": "12.8"
+  },
+  "runner": "scripts/eval_native_no_network_solver_gpu.py",
+  "outputs": "results/native-no-network/seed{search_seed}/no_network_{dataset}.jsonl"
+}

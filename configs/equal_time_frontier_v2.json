@@ -1,0 +1,43 @@
+{
+  "protocol_version": "ema-rascal-equal-time-frontier-v2-2026-08-29",
+  "frozen_at_utc": "2026-08-29T13:10:00Z",
+  "scientific_question": "What native MCES quality is reached by RASCAL and the training-free EMA anytime solver as a function of end-to-end wall-clock budget?",
+  "datasets": ["AIDS", "MOLHIV", "MCF-7"],
+  "native_pairs": {"AIDS": 100, "MOLHIV": 91, "MCF-7": 100},
+  "released_files_evaluated": {"AIDS": 100, "MOLHIV": 98, "MCF-7": 100},
+  "rascal_budgets_seconds": [60, 300, 900],
+  "ema_budgets_seconds": [15, 30, 60, 120],
+  "ema_search_seeds": [0, 1, 2],
+  "time_definition": "End-to-end per-pair elapsed wall time from pair loading and ACG construction through the incumbent available at each deadline.",
+  "ema_contract": {
+    "checkpoint": null,
+    "initializer_mode": "fixed",
+    "schedule_mode": "fixed",
+    "metric_mode": "unit",
+    "training_free": true,
+    "immediate_incumbent": "canonical injective mapping immediately after ACG construction, followed by Hungarian rounding of fixed structural initializer logits before Sinkhorn/mirror processing",
+    "continuous_streams": 1,
+    "continuous_stream_policy": "one deterministic fixed/fixed/unit trajectory followed by short anytime hard-search atoms",
+    "candidate_selection": "best directly observed legal hard MCES score",
+    "anytime_requirement": "Every deadline has a legal incumbent and every later checkpoint retains every earlier incumbent."
+  },
+  "rascal_60s_source": "results/rascal-mces",
+  "formal_hardware": {
+    "accelerator_contains": ["H100"],
+    "cuda_runtime": "12.8"
+  },
+  "outputs": {
+    "rascal": "results/equal-time-frontier/rascal/{budget}s/{dataset}",
+    "ema": "results/equal-time-frontier/ema-v2/seed{seed}/ema_{dataset}.jsonl"
+  },
+  "reporting": {
+    "primary": "mean native edge accuracy versus declared wall-clock deadline",
+    "secondary": "exact-reference recovery, mean edge deficit, timeouts, and paired bootstrap intervals",
+    "all_budgets_reported": true,
+    "no_quality_selection": true
+  },
+  "supersedes": {
+    "protocol": "ema-rascal-equal-time-frontier-v1-2026-08-29",
+    "reason": "The v1 implementation constructed four continuous streams before its first hard incumbent; its first four AIDS records had no incumbent at 15 seconds, violating the declared anytime checkpoint contract."
+  }
+}

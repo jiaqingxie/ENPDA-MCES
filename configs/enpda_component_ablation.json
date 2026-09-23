@@ -1,0 +1,49 @@
+{
+  "protocol_version": "enpda-component-ablation-v1-2026-08-30",
+  "frozen_at_utc": "2026-08-30T06:00:00Z",
+  "scientific_question": "Which parts of the primal-dual Core account for native proposal quality under an identical four-round and one-Hungarian budget?",
+  "parent_protocol": "configs/enpda_sota.json",
+  "datasets": ["AIDS", "MOLHIV", "MCF-7"],
+  "training_seeds": [0, 1, 2],
+  "arms": {
+    "no_price": {
+      "mode": "analytic",
+      "description": "fixed row-simplex dynamics with lambda identically zero"
+    },
+    "analytic": {
+      "mode": "analytic",
+      "description": "fixed primal-dual auction with analytic target-price updates"
+    },
+    "initializer_only": {
+      "mode": "initializer_only",
+      "description": "neural initializer followed by analytic primal-dual dynamics"
+    },
+    "dynamics_only": {
+      "mode": "dynamics_only",
+      "description": "analytic initializer followed by neural correction and step heads"
+    },
+    "full": {
+      "mode": "learned",
+      "description": "complete ENPDA-Core"
+    }
+  },
+  "fixed_controls": {
+    "rounds": 4,
+    "rounding": "one partial Hungarian projection",
+    "hard_search": false,
+    "test_time_training": false,
+    "native_pair_sanitation": "exclude recovered MOLHIV tensors exactly as in the main native protocol"
+  },
+  "statistics": {
+    "bootstrap_replicates": 20000,
+    "report_all_arms": true
+  },
+  "hardware": {
+    "accelerator_any": ["H100", "H200"],
+    "cuda_runtime_prefix": "12.8"
+  },
+  "outputs": {
+    "root": "results/enpda_component_ablation",
+    "tex": "paper/generated/enpda_component_ablation.tex"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "protocol": "RASCAL hard-negative mixed-edit retrieval v1",
+  "datasets": ["MOLHIV", "MCF-7"],
+  "methods": ["simgnn", "gmn", "neuromatch"],
+  "protocol_seeds": [20260823, 20260824, 20260825],
+  "model_seeds": [0, 1, 2],
+  "training_source": "target-dataset MCES train only; all exact graph fingerprints are excluded from the retrieval pools",
+  "validation_fraction_by_source_file": 0.2,
+  "target": "released/RASCAL Johnson similarity",
+  "hidden_dim": 64,
+  "message_passing_layers": 3,
+  "epochs": 30,
+  "patience": 6,
+  "learning_rate": 0.001,
+  "weight_decay": 0.00001,
+  "gradient_accumulation_pairs": 16,
+  "relevance_threshold": 0.5,
+  "queries": 20,
+  "candidates_per_query": 500,
+  "selection": "best validation MSE; test pools are untouched until checkpoint selection"
+}

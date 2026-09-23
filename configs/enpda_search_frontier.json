@@ -1,0 +1,37 @@
+{
+  "protocol_version": "enpda-search-frontier-v2-2026-08-30",
+  "frozen_at_utc": "2026-08-30T06:30:00Z",
+  "scientific_question": "Does a frozen ENPDA proposal reduce the additional discrete-search budget required to reach a given native MCES quality?",
+  "parent_protocol": "configs/enpda_sota.json",
+  "datasets": ["AIDS", "MOLHIV", "MCF-7"],
+  "training_seeds": [0, 1, 2],
+  "arms": ["learned", "analytic"],
+  "search_budget_seconds": [0, 1, 5, 30],
+  "fixed_controls": {
+    "core_rounds": 4,
+    "continuous_streams": 1,
+    "initial_snapshot": "one partial Hungarian projection of the Core output",
+    "search_operator": "identical seeded refine, perturb, constructive, annealing, and LNS stream",
+    "candidate_admission": "a candidate enters a budget snapshot only if it completed by that post-Core deadline",
+    "test_time_training": false
+  },
+  "search": {
+    "maximum_restarts": 64,
+    "refinement_passes": 30,
+    "anneal_steps": 2500,
+    "lns_steps": 250
+  },
+  "statistics": {
+    "bootstrap_replicates": 20000,
+    "report_all_budgets": true
+  },
+  "hardware": {
+    "accelerator_any": ["H100", "H200"],
+    "cuda_runtime_prefix": "12.8"
+  },
+  "outputs": {
+    "root": "results/enpda_search_frontier",
+    "tex": "paper/generated/enpda_search_frontier.tex",
+    "figure": "paper/figures/fig_enpda_search_frontier.pdf"
+  }
+}

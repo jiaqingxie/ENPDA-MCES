@@ -1,0 +1,33 @@
+{
+  "protocol_version": "enpda-price-source-ablation-v1-2026-08-30",
+  "frozen_at_utc": "2026-08-30T09:25:00Z",
+  "scientific_question": "Do learned target prices tighten ENPDA's repaired assignment-dual certificate relative to analytic congestion prices and zero prices?",
+  "datasets": ["AIDS", "MOLHIV", "MCF-7"],
+  "native_pairs": {"AIDS": 100, "MOLHIV": 91, "MCF-7": 100},
+  "training_seeds": [0, 1, 2],
+  "price_sources": {
+    "learned": "prices after four frozen ENPDA rounds",
+    "analytic": "prices after the identical four-round analytic congestion update, with all neural residuals disabled",
+    "zero": "the identically zero target-price vector"
+  },
+  "isolation": {
+    "lower_bound": "the same seed-specific frozen ENPDA-Solver incumbent for all three price sources",
+    "repair": "the same deterministic nonnegative scaling grid and row-potential repair",
+    "primary_metric": "price-only valid relative upper-bound gap",
+    "secondary_metric": "fraction for which the integer upper bound closes the incumbent"
+  },
+  "statistics": {
+    "bootstrap_replicates": 20000,
+    "report_all_sources": true
+  },
+  "hardware": {
+    "accelerator_any": ["H100", "H200"],
+    "cuda_runtime_prefix": "12.8"
+  },
+  "outputs": {
+    "root": "results/enpda_price_source_ablation",
+    "main_table": "paper/generated/enpda_price_source_ablation_main.tex",
+    "appendix_table": "paper/generated/enpda_price_source_ablation.tex",
+    "figure": "paper/figures/fig_enpda_price_source_ablation.pdf"
+  }
+}

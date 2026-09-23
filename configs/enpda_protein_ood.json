@@ -1,0 +1,33 @@
+{
+  "protocol_version": "enpda-proteins-enzymes-planted-ood-v1-20260916",
+  "reference_protocol": "configs/enpda_nonmolecular_ood.json",
+  "datasets": ["PROTEINS", "ENZYMES"],
+  "num_pairs_per_dataset": 200,
+  "minimum_nodes": 24,
+  "maximum_nodes": 64,
+  "selection_seed": 20260916,
+  "edge_deletion_fraction": 0.30,
+  "labels": "one universal node label and one universal edge label; original attributes unused",
+  "source_graphs_disjoint_within_dataset": true,
+  "selection": "shuffle all size-eligible nonempty graphs before predictions; take first 200 distinct graph indices",
+  "training_seeds": [0, 1, 2],
+  "checkpoint_pattern": "checkpoints/enpda_formal/seed{seed}.best.pt",
+  "fine_tuning": false,
+  "test_time_gradients": false,
+  "rounds": 4,
+  "arms": ["analytic", "learned"],
+  "projection": "one partial Hungarian projection",
+  "discrete_refinement": false,
+  "primary_metric": "common edges divided by analytic planted optimum (target edge count)",
+  "exact_recovery": "attains optimum edge count, independent of mapping automorphisms",
+  "timing": "same Core interval as IMDB: synchronized forward, Hungarian, CPU mapping transfer and hard scoring; report ACG construction separately; one untimed warmup per arm/checkpoint/dataset; alternate arm order by graph rank plus seed",
+  "bootstrap_seed": 20260916,
+  "statistics": {
+    "bootstrap_replicates": 20000,
+    "primary": "paired graph bootstrap with independent resampling of three frozen training seeds; each dataset reported separately"
+  },
+  "hardware": {
+    "accelerator_any": ["H100", "H200"],
+    "cuda_runtime_prefix": "12.8"
+  }
+}

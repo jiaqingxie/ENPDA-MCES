@@ -1,0 +1,20 @@
+{
+  "protocol_version": "enpda-submission-followups-20260916-v1",
+  "selection_seed": 20260916,
+  "native_datasets": ["AIDS", "MOLHIV", "MCF-7"],
+  "classical_budgets_seconds": [0.1, 0.16, 0.6],
+  "checkpoint_seeds": [0, 1, 2],
+  "neural_policy": "unchanged frozen four-round Core; no search or retraining",
+  "timing": "serial same-host, one torch/BLAS thread; include graph conversion, features, inference, rounding and validation; exclude disk loading and checkpoint loading; cooperative baseline caps, report actual latency and overshoot",
+  "mcsplit_upstream": "https://github.com/jamestrimble/ijcai2017-partitioning-common-subgraph",
+  "mcsplit_commit": "a1f3e596ee8482ad332ff3de4166051338b5adaf",
+  "mcsplit_objective": "maximum common induced vertices; independent unrestricted MCES scoring of its legal map; not an exact MCES solver",
+  "fmcs_objective": "connected maximum common bonds; exact atom and bond labels; independent unrestricted MCES scoring; only validated incumbents observed before deadline",
+  "natural_dataset": "IMDB-BINARY",
+  "natural_bins": [[10, 20, 50], [20, 40, 50]],
+  "natural_selection": "Within each half-open size bin sort graph indices by SHA256(seed:lo:hi:index), take first 2*num_pairs and pair consecutive entries. No graph reuse, edge deletion, planted alignment, outcome filtering, or class conditioning.",
+  "natural_oracle_seconds": 60,
+  "natural_oracle": "independent unrestricted MCES RASCAL with all fragments allowed; verify its map; use timeout-free optimum or lower/upper accuracy intervals for every unresolved pair",
+  "bootstrap_replicates": 20000,
+  "reporting": "Keep all preselected pairs, failures and deadline overruns. Native denominators are released MCES reference counts, not atom-alignment correctness. No cross-machine timing ratios."
+}

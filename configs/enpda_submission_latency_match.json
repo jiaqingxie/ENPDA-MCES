@@ -1,0 +1,9 @@
+{
+  "protocol_version": "enpda-cpu-pair-latency-match-20260916-v1",
+  "reason": "CPU Core latency differs from the historical H100 mean. Add per-pair matched latency so fixed 0.16-second references cannot be mistaken for an equal-time comparison.",
+  "declared_after": "The first 38 native CPU pairs had partial outputs; no matched-budget classical results had been run.",
+  "budget_rule": "Arithmetic mean of the three measured ENPDA-Core seed latencies for this same pair, host, and device, including validation.",
+  "methods": ["FMCS", "McSplit"],
+  "scope": "All 291 native and all 100 preselected natural pairs, without outcome filtering.",
+  "timing": "Cooperative cap; retain measured end-to-end latency and overshoot. No strict deadline or exact-objective-equivalence claim."
+}

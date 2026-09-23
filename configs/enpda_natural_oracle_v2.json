@@ -1,0 +1,9 @@
+{
+  "protocol_version": "enpda-natural-oracle-v2-20260916",
+  "reason": "Use independently verified feasible mappings and valid upper bounds for all preselected natural graph pairs.",
+  "scope": "Unchanged frozen 100-pair natural manifest; no pair exclusions or replacements.",
+  "oracle": "Sparse binary-assignment lifted MILP with independently verified incumbent and outward-rounded dual upper bound, intersected with degree/edge structural caps.",
+  "milp_seconds": 60,
+  "fallback_lower_bound": "deterministic degree-sorted complete injection; validated before use",
+  "reporting": "Keep all pairs. An integer optimum is certified only if a legal lower bound equals a valid integer upper bound. Unresolved pairs retain accuracy intervals; final reporting can strengthen lower bounds using any independently verified method map."
+}

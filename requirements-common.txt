@@ -1,0 +1,9 @@
+# Common non-Torch dependencies. Torch comes from the selected CPU/GPU profile.
+numpy==1.26.4
+scipy==1.12.0
+networkx==3.4.2
+torch-geometric==2.5.3
+ogb==1.3.6
+pygmtools==0.6.0
+matplotlib==3.8.4
+pytest==8.1.1

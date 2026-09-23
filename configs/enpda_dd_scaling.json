@@ -1,0 +1,61 @@
+{
+  "protocol_version": "enpda-natural-dd-scaling-v1-2026-08-30",
+  "frozen_before_results": true,
+  "scientific_question": "How do sparse ACG construction, neural inference, Hungarian rounding, and memory scale on naturally paired non-molecular protein graphs?",
+  "dataset": {
+    "name": "TU D&D",
+    "root": "data/tu",
+    "graphs": 1178,
+    "raw_sha256": {
+      "DD_A.txt": "e538ec13a262b84a0664db2f22e6ff720fb5bb74965536c37f4b8e962d156e4a",
+      "DD_graph_indicator.txt": "95aabe75f6537326a14e4efc0d006854c20769f3cfc4877b862803d21c51aff2",
+      "DD_node_labels.txt": "b0d10b05702c2d655d691b5a6f5585081993860013eeab801572202df1c5c108"
+    },
+    "pairing": "different graph identities paired without editing, planting, or permutation-derived correspondence",
+    "node_labels": "original D&D discrete node labels",
+    "edge_labels": "one universal edge label because D&D supplies no edge labels",
+    "size_bins": {
+      "50": [40, 75],
+      "100": [75, 150],
+      "200": [150, 250],
+      "300": [250, 400],
+      "500": [400, 650]
+    },
+    "pairs_per_bin": 5,
+    "selection_seed": 20260830,
+    "graph_disjoint_within_benchmark": true
+  },
+  "models": {
+    "enpda_checkpoint": "checkpoints/enpda_formal/seed0.best.pt",
+    "sinkhorn_checkpoint": "checkpoints/train_once_sinkhorn/seed0.best.pt",
+    "parameters_frozen": true,
+    "gumbel_samples": 10
+  },
+  "metrics": [
+    "left/right nodes and edges",
+    "full grid and compatible ACG candidates",
+    "sparse ACG edges",
+    "ACG build seconds",
+    "neural forward seconds",
+    "Hungarian seconds",
+    "peak CUDA allocated/reserved bytes",
+    "legal hard preserved edges",
+    "OOM and failures retained"
+  ],
+  "claims": {
+    "no_exact_mces_labels": true,
+    "purpose": "natural-graph scalability and feasibility, not exact MCES accuracy"
+  },
+  "hardware": {
+    "accelerator_any": ["H100", "H200"],
+    "cuda_runtime_prefix": "12.8"
+  },
+  "outputs": {
+    "manifest": "results/enpda_dd_scaling/manifest.json",
+    "raw": "results/enpda_dd_scaling/raw.jsonl",
+    "completion": "results/enpda_dd_scaling/COMPLETE.json",
+    "summary": "results/enpda_dd_scaling/summary.json",
+    "table": "paper/generated/enpda_dd_scaling.tex",
+    "figure": "paper/figures/fig_enpda_dd_scaling.pdf"
+  }
+}

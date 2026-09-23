@@ -1,0 +1,35 @@
+{
+  "protocol_version": "nema-theory-v1",
+  "data_root": "data/official",
+  "datasets": ["AIDS", "MOLHIV", "MCF-7"],
+  "samples_per_dataset": 25,
+  "sampling": "systematic-even-over-native-official-test-order",
+  "checkpoint": "checkpoints/nema_gpu.best.pt",
+  "table1_results": {
+    "AIDS": "results/gpu_table12_nema_AIDS.jsonl",
+    "MOLHIV": "results/gpu_table12_nema_MOLHIV.jsonl",
+    "MCF-7": "results/gpu_table12_nema_MCF-7.jsonl"
+  },
+  "trace_iterations": 64,
+  "max_backtracks": 32,
+  "trace_checkpoints": [0, 1, 2, 4, 8, 16, 32, 64],
+  "equivariance_iterations": 8,
+  "residual_eta": 0.1,
+  "sinkhorn_tolerance": 1e-5,
+  "sinkhorn_max_iterations": 250,
+  "initial_sinkhorn_max_iterations": 2000,
+  "residual_sinkhorn_max_iterations": 2000,
+  "residual_sinkhorn_fp64_max_iterations": 10000,
+  "rounding_refinement_passes": 20,
+  "certificate_budgets_seconds": [0.1, 1.0, 10.0],
+  "lp_time_limit_seconds": 60.0,
+  "certificate_workers": 8,
+  "seed": 26016,
+  "outputs": {
+    "manifest": "results/theory/manifest.json",
+    "hardware": "results/theory/hardware.json",
+    "traces": "results/theory/traces.jsonl",
+    "certificates": "results/theory/certificates.jsonl",
+    "completion": "results/theory/completion.json"
+  }
+}

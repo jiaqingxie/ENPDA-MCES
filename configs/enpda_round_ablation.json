@@ -1,0 +1,20 @@
+{
+  "protocol_version": "enpda-native-round-ablation-v1-2026-08-29",
+  "parent_protocol": "configs/enpda_sota.json",
+  "scientific_question": "How does frozen ENPDA-Core proposal quality change with the number of primal-dual rounds under an identical one-shot Hungarian evaluation?",
+  "datasets": ["AIDS", "MOLHIV", "MCF-7"],
+  "training_seeds": [0, 1, 2],
+  "round_budgets": [1, 2, 4, 8],
+  "arms": ["analytic", "learned"],
+  "molhiv_excluded_keys": ["23", "46", "48", "54", "61", "64", "76"],
+  "evaluation": {
+    "projection": "one partial Hungarian projection",
+    "discrete_refinement": false,
+    "test_time_gradients": false,
+    "primary_metric": "MCES accuracy on the fixed 100/91/100 native scope"
+  },
+  "hardware": {
+    "accelerator_any": ["H100", "H200"],
+    "cuda_runtime_prefix": "12.8"
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "protocol_version": "enpda-graph-disjoint-v1-2026-09-17",
+  "frozen_at_utc": "2026-09-17",
+  "scientific_question": "On the unchanged native test pairs, do freshly trained graph-disjoint ENPDA policies improve fixed-depth assignments, and do target prices add value against a separately trained no-price control?",
+  "datasets": [
+    "AIDS",
+    "MOLHIV",
+    "MCF-7"
+  ],
+  "training_seeds": [
+    0,
+    1,
+    2
+  ],
+  "model": {
+    "steps": 4,
+    "hidden_dim": 64,
+    "message_layers": 2,
+    "base_primal_step": 0.5,
+    "base_dual_step": 0.5,
+    "incompatibility_penalty": 8.0,
+    "initial_dummy_logit": -1.0
+  },
+  "training": {
+    "epochs": 12,
+    "learning_rate": 0.0003,
+    "weight_decay": 1e-05,
+    "gradient_accumulation": 8,
+    "gradient_clip_norm": 2.0,
+    "use_all_training_pairs": true,
+    "teacher_nll_weight": 1.0,
+    "intermediate_nll_weight": 0.25,
+    "analytic_margin_weight": 0.5,
+    "analytic_nll_margin": 0.01,
+    "soft_objective_weight": 0.05,
+    "capacity_penalty_weight": 0.1,
+    "price_penalty_weight": 0.0001
+  },
+  "validation": {
+    "use_all_validation_pairs": true,
+    "step_budgets": [
+      1,
+      2,
+      4
+    ],
+    "checkpoint_epochs": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10,
+      12
+    ],
+    "selection_metric": "globally graph-disjoint validation mean normalized hard-edge advantage over the same fixed analytic primal-dual reference",
+    "test_access_during_selection": false
+  },
+  "native_test": {
+    "pairs": {
+      "AIDS": 100,
+      "MOLHIV": 91,
+      "MCF-7": 100
+    },
+    "core": "one deterministic learned trajectory, one partial Hungarian projection, no discrete refinement",
+    "analytic_core": "identical fixed-depth analytic primal-dual trajectory and partial Hungarian projection",
+    "solver": {
+      "learned_primary_streams": 3,
+      "analytic_reference_streams": 1,
+      "discrete_restarts_per_stream": 64,
+      "constructive_restarts_per_stream": 64,
+      "refinement_passes": 30,
+      "anneal_steps": 2500,
+      "lns_steps": 250,
+      "noise_scale": 0.5
+    },
+    "comparators": {
+      "nga": "results/gpu_table12_nga_official_{dataset}.jsonl",
+      "current_solver": "results/ablation/learned_full_current_{dataset}_seed{seed}.jsonl",
+      "analytic_solver": "results/native-no-network/seed{seed}/no_network_{dataset}.jsonl"
+    },
+    "metrics": [
+      "MCES accuracy",
+      "Johnson-similarity MSE",
+      "end-to-end wall time",
+      "paired edge wins/ties/losses"
+    ]
+  },
+  "statistics": {
+    "bootstrap_replicates": 20000,
+    "primary": "Resample connected components of the test graph-pair incidence graph, jointly across methods; pair training seeds for full-versus-no-price; report pair-weighted means and all intervals.",
+    "report_all_results": true,
+    "no_result_based_reruns": true,
+    "primary_contrasts": [
+      "full-minus-analytic",
+      "full-minus-trained_no_price"
+    ],
+    "secondary_contrasts": [
+      "full-minus-full_prices_removed",
+      "analytic-minus-analytic_no_price"
+    ]
+  },
+  "hardware": {
+    "accelerator_any": [
+      "H100",
+      "H200"
+    ],
+    "cuda_runtime_prefix": "12.8"
+  },
+  "outputs": {
+    "root": "results/enpda_graph_disjoint_v1",
+    "checkpoints": "checkpoints/enpda_graph_disjoint_v1"
+  },
+  "split_manifest": "data/enpda_graph_disjoint_v1/manifest.json",
+  "reference_training": {
+    "epochs": 20,
+    "learning_rate": 0.001,
+    "gradient_accumulation": 8,
+    "steps": 8,
+    "hidden_dim": 32,
+    "checkpoint_selection": "maximum training soft objective; training graphs only"
+  },
+  "teacher": {
+    "unit_mirror_steps": 2,
+    "refinement_passes": 30,
+    "initializer_mode": "learned",
+    "schedule_mode": "learned",
+    "metric_mode": "unit",
+    "rounding": "Hungarian followed by steepest exact 2-exchange/reassignment",
+    "supervised_rows": "only source nodes incident to teacher-preserved compatible edges",
+    "uses_released_mapping": false,
+    "uses_released_optimum": false
+  },
+  "arms": [
+    "full",
+    "trained_no_price"
+  ],
+  "core_evaluation_arms": [
+    "analytic",
+    "analytic_no_price",
+    "full",
+    "full_prices_removed",
+    "trained_no_price"
+  ],
+  "accounting": {
+    "record_cuda_synchronized_wall_time": true,
+    "phases": [
+      "reference_pretraining",
+      "teacher_generation",
+      "student_full",
+      "student_trained_no_price",
+      "native_evaluation"
+    ],
+    "deployment_startup_phases": [
+      "reference_pretraining",
+      "teacher_generation",
+      "student_full"
+    ],
+    "ablation_training_is_not_deployment_cost": true,
+    "historical_training_cost_is_not_reused": true
+  }
+}

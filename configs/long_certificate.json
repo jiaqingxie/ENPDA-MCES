@@ -1,0 +1,41 @@
+{
+  "protocol_version": "ema-long-certificate-v1-2026-08-29",
+  "frozen_at_utc": "2026-08-29T00:00:00Z",
+  "scientific_question": "How often can the frozen native MCES sample be proved optimal when the sparse lifted MILP budget is extended from 10 seconds to 300 and 1800 seconds?",
+  "source_certificate_records": "data/certificate_sample.jsonl",
+  "datasets": [
+    "AIDS",
+    "MOLHIV",
+    "MCF-7"
+  ],
+  "pairs_per_dataset": 25,
+  "sampling": "25 numeric-test-order positions per dataset: round(linspace(0, N-1, 25)); independent of outcomes.",
+  "budgets_seconds": [
+    10,
+    300,
+    1800
+  ],
+  "relative_mip_gap": 0.0,
+  "workers_per_shard": 8,
+  "formal_hardware": {
+    "accelerator_contains": [
+      "H100",
+      "H200"
+    ],
+    "cuda_runtime": "12.8"
+  },
+  "outputs": "results/long-certificate/{budget}s/certificate_{dataset}.jsonl",
+  "attestations": "results/long-certificate/{budget}s/complete_{dataset}.json",
+  "reporting": {
+    "budgets_seconds": [
+      10,
+      300,
+      1800
+    ],
+    "primary": "certified-optimal proportion with an exact Clopper-Pearson 95% interval",
+    "secondary": "median relative gap and proportions with gap at most 1%, 5%, and 10%",
+    "monotone_envelope": "At each budget, combine every legal incumbent and valid dual upper bound available at that or any smaller budget.",
+    "no_quality_selection": true
+  },
+  "hard_subset_rule": "Among pairs certified optimal by 1800 seconds, retain pairs on which both frozen RASCAL-60s and matched NGA return fewer common edges than the certified optimum."
+}

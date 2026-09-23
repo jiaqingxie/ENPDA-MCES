@@ -1,0 +1,14 @@
+{
+  "requested_at_utc": "2026-09-18T07:03:34.685714+00:00",
+  "forbidden_project": "CQ项目",
+  "required_project_user_label": "能动大模型",
+  "preserve_already_running_jobs": true,
+  "new_platform_submissions_enabled": true,
+  "reason": "Explicit user funding instruction: all future jobs and retries use the agency-model project; existing running jobs remain untouched.",
+  "project": "具有能动性的科学大模型",
+  "allowed_projects": [
+    "具有能动性的科学大模型"
+  ],
+  "project_english_name": "cq-scientific-posttraining",
+  "validated_at_utc": "2026-09-18T07:06:12.183953+00:00"
+}

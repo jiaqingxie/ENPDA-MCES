@@ -1,0 +1,49 @@
+{
+  "protocol_version": "nema-unit-anchored-st-validation-pilot-v1-2026-08-25",
+  "exploratory_validation_only": true,
+  "scientific_question": "Can hard-aligned metric learning improve native one-shot proposals when optimization starts exactly at M=1 and checkpoint selection uses held-out training hard score rather than the final epoch?",
+  "data_root": "data/official",
+  "datasets": ["AIDS", "MOLHIV", "MCF-7"],
+  "expected_training_pairs": {"AIDS": 810, "MOLHIV": 810, "MCF-7": 891},
+  "validation_file_counts": {"AIDS": 18, "MOLHIV": 2, "MCF-7": 20},
+  "split_seed": 20260825,
+  "training_seeds": [0, 1, 2],
+  "base_checkpoints": [
+    "checkpoints/ablation/nema_joint_seed0.best.pt",
+    "checkpoints/ablation/nema_joint_seed1.best.pt",
+    "checkpoints/ablation/nema_joint_seed2.best.pt"
+  ],
+  "training": {
+    "epochs": 12,
+    "learning_rate": 0.0001,
+    "gradient_accumulation": 8,
+    "gradient_clip_norm": 1.0,
+    "hard_weight": 0.85,
+    "soft_weight": 0.15,
+    "unit_anchor_weight": 0.001,
+    "mirror_step_budgets": [1, 2, 4],
+    "line_search": false,
+    "stationary_safeguard": false,
+    "optimized_parameters": "fresh positive diagonal preconditioner only",
+    "frozen_parameters": ["initial_weights", "initial_bias", "step_logits"],
+    "metric_initialization": "fresh bounded log-residual metric M=exp(log(2)*tanh(r)); zero logits make epoch 0 exactly M=1 and keep M in [0.5,2]",
+    "checkpoint_selection": "maximum held-out-training normalized hard-edge advantage over the identical unit trajectory; ties prefer the earlier epoch",
+    "uses_native_test_pairs": false,
+    "uses_ground_truth_correspondence": false,
+    "uses_optimum_edge_count": false
+  },
+  "validation": {
+    "mirror_step_budgets": [1, 2, 4],
+    "rounding": "one-shot Hungarian",
+    "refinement_passes": 0,
+    "selection_normalizer": "minimum input edge count, not released optimum",
+    "pass_rule": "positive three-seed mean learned-minus-unit normalized hard-edge advantage on every dataset"
+  },
+  "formal_hardware": {"accelerator_contains": "H100", "cuda_runtime": "12.8"},
+  "outputs": {
+    "root": "results/unit_anchored_st_pilot",
+    "manifest": "results/unit_anchored_st_pilot/manifest.json",
+    "checkpoints": "checkpoints/unit_anchored_st_pilot",
+    "summary": "results/unit_anchored_st_pilot/summary.json"
+  }
+}

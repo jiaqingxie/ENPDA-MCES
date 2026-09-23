@@ -1,0 +1,13 @@
+.git
+data
+results
+checkpoints
+artifacts
+vendor
+paper
+reports
+.venv*
+.gpu-venv
+__pycache__
+*.egg-info
+*.log

@@ -1,0 +1,50 @@
+{
+  "protocol_version": "enpda-imdb-binary-exact-ood-v1-2026-08-30",
+  "frozen_at_utc": "2026-08-30T04:37:00Z",
+  "scientific_question": "Does a molecular-trained frozen ENPDA-Core retain a causal proposal advantage on non-molecular social-graph topology?",
+  "dataset": {
+    "name": "IMDB-BINARY",
+    "source": "TU Dortmund graph benchmark collection",
+    "domain": "actor-collaboration social graphs",
+    "raw_root": "data/nonmolecular/IMDB-BINARY/raw",
+    "num_pairs": 100,
+    "selection_seed": 20260830,
+    "minimum_nodes": 24,
+    "maximum_nodes": 64,
+    "minimum_edges": 1,
+    "node_labels": "one universal label",
+    "edge_labels": "one universal label"
+  },
+  "pair_construction": {
+    "edge_deletion_fraction": 0.30,
+    "target_node_permutation": "independent deterministic permutation per source graph",
+    "exact_optimum_argument": "the planted map preserves every target edge, while no common edge subgraph can contain more edges than the target graph",
+    "source_graphs_are_disjoint_across_pairs": true
+  },
+  "training_seeds": [0, 1, 2],
+  "rounds": 4,
+  "arms": ["analytic", "learned"],
+  "evaluation": {
+    "model_training_domain": "AIDS, MOLHIV, and MCF-7 molecular graph pairs only",
+    "checkpoint_pattern": "checkpoints/enpda_formal/seed{seed}.best.pt",
+    "fine_tuning": false,
+    "test_time_gradients": false,
+    "projection": "one partial Hungarian projection",
+    "discrete_refinement": false,
+    "primary_metric": "edge accuracy against the analytic planted optimum",
+    "secondary_metrics": [
+      "exact recovery rate",
+      "mean missing edges",
+      "paired edge wins/ties/losses",
+      "end-to-end Core wall time"
+    ]
+  },
+  "statistics": {
+    "bootstrap_replicates": 20000,
+    "primary": "paired graph bootstrap with independent resampling of three frozen training seeds"
+  },
+  "hardware": {
+    "accelerator_any": ["H100", "H200"],
+    "cuda_runtime_prefix": "12.8"
+  }
+}
